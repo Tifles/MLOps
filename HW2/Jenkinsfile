@@ -1,81 +1,52 @@
 pipeline {
     agent any
     stages {
-        stage('Setup Python Environment') {
+        stage('Setup virtual environment') {
             steps {
-                script {
+                dir('HW2') {
+                    sh '''python3 -m venv env
+                    source env/bin/activate
+                    pip install -r requirements.txt'''
+                }
+            }
+        }
+        stage('Preprocessing data') {
+            steps {
+                dir('HW2/py_scripts') {
                     sh '''
-                        if [ ! -d "HW2/.venv" ]; then
-                            env_name=${1:-".venv"}
-                            python3 -m venv "/HW2/$env_name"
-                            echo "The virtual environment '$env_name' has been created."
-                        fi
-                    '''
-
-                    sh '''
-                        env_name=${1:-"HW2/.venv"}
-                        if [ ! -d "$env_name" ]; then
-                            echo "Virtual environment '$env_name' not found. Use '$0 create [env_name]' to create."
-                            return 1
-                        fi
-                        if [ -z "$VIRTUAL_ENV" ]; then
-                            chmod +x .".HW2/$env_name/bin/activate
-                            ."./HW2/$env_name/bin/activate
-                            echo "Virtual environment '$env_name' is activated."
-                        else
-                            echo "The virtual environment has already been activated."
-                        fi
-                    '''
-
-                    sh '''
-                        if [ ! -f "HW2/requirements.txt" ]; then
-                            echo "File requirements.txt not found."
-                            return 1
-                        fi
-                        
-                        # Check if all dependencies from requirements.txt are installed
-                        for package in $(cat HW2/requirements.txt | cut -d '=' -f 1); do
-                            if ! pip freeze | grep -q "^$package=="; then
-                                echo "Dependency installation..."
-                                pip install -r /HW2/requirements.txt
-                                echo "Dependencies installed."
-                                return 0
-                            fi
-                        done
-
-                        echo "All dependencies are already installed."
+                    python3 data_preprocessing.py
                     '''
                 }
             }
         }
-        stage('Data preprocessing') {
+        stage('HW2/py_scripts') {
             steps {
-                sh 'python3 HW2/py_scripts/data_preprocessing.py'
-                echo 'Finish data preprocessing'
+                dir('HW2/py_scripts') {
+                    sh '''
+                    python3 model_preparation.py
+                    '''
+                }
             }
         }
-        stage('Train model') {
+        stage('Model testing') {
             steps {
-                sh 'python3 HW2/py_scripts/model_preparation.py'
-                echo 'Finish train model'
-            }
-        }
-        stage('Test model') {
-            steps {
-                sh 'python3 HW2/python_scripts/model_testing.py'
-                echo 'Finish test model'
+                dir('HW2/py_scripts') {
+                    sh '''
+                    python3 model_testing.py
+                    '''
+                }
             }
         }
     }
     post {
         always {
-            echo 'Pipeline has finished.'
+            echo 'The pipeline is finished!'
         }
         success {
-            echo 'Pipeline completed successfully.'
+            echo 'The build was successful!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'The build failed.'
         }
     }
 }
