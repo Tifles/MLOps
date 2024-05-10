@@ -1,5 +1,5 @@
 # EN
-[![RU]](/README.ru.md)
+[![RU]](/HW1/README.ru.md)
 
 # Laboratory work №1 
 
