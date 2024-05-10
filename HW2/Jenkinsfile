@@ -5,22 +5,22 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        if [ ! -d ".venv" ]; then
+                        if [ ! -d "HW2/.venv" ]; then
                             env_name=${1:-".venv"}
-                            python3 -m venv "$env_name"
+                            python3 -m venv "/HW2/$env_name"
                             echo "The virtual environment '$env_name' has been created."
                         fi
                     '''
 
                     sh '''
-                        env_name=${1:-".venv"}
+                        env_name=${1:-"/HW2/.venv"}
                         if [ ! -d "$env_name" ]; then
                             echo "Virtual environment '$env_name' not found. Use '$0 create [env_name]' to create."
                             return 1
                         fi
                         if [ -z "$VIRTUAL_ENV" ]; then
-                            chmod +x ./$env_name/bin/activate
-                            ./$env_name/bin/activate
+                            chmod +x ."./HW2/$env_name/bin/activate
+                            ."./HW2/$env_name/bin/activate
                             echo "Virtual environment '$env_name' is activated."
                         else
                             echo "The virtual environment has already been activated."
