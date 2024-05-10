@@ -7,7 +7,6 @@ Each catalog contains a corresponding work.
 To work with projects:
 1. Create a local copy of the repository with the command ```git clone https://github.com/Tifles/MLOps.git ```.
 2. Go to the project directory ```cd MLOps```
-3. Install dependencies from the file requireements.txt ```pip install -r requirements.txt ``` 
 
 ### Laboratory work №1 (HW1)
 [Creating an automatic machine learning project pipeline.](./HW1/)

@@ -17,3 +17,9 @@ Creating an automatic machine learning project pipeline.
 1.4. model_testing.py - checks the machine learning model on the constructed data from the "test" folder.
 
 2. pipeline.sh - bash script that runs all python scripts sequentially.
+
+## Project Launch:
+
+1. Go to the project directory ``cd HW1``
+2. Make sure that the bash script file pipeline.sh is executable (chmod u+x pipeline.sh )
+3. Run the script to execute ``./pipeline.sh ``
