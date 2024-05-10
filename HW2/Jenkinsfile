@@ -28,16 +28,16 @@ pipeline {
                     '''
 
                     sh '''
-                        if [ ! -f "./HW2/requirements.txt" ]; then
+                        if [ ! -f "./requirements.txt" ]; then
                             echo "File requirements.txt not found."
                             return 1
                         fi
 
                         # Check if all dependencies from requirements.txt are installed
-                        for package in $(cat ./HW2/requirements.txt | cut -d '=' -f 1); do
+                        for package in $(cat ./requirements.txt | cut -d '=' -f 1); do
                             if ! pip freeze | grep -q "^$package=="; then
                                 echo "Dependency installation..."
-                                pip install -r ./HW2/requirements.txt
+                                pip install -r ./requirements.txt
                                 echo "Dependencies installed."
                                 return 0
                             fi
@@ -50,19 +50,19 @@ pipeline {
         }
         stage('Data preprocessing') {
             steps {
-                sh 'python3 ./HW2/py_scripts/data_preprocessing.py'
+                sh 'python3 ./py_scripts/data_preprocessing.py'
                 echo 'Finish data preprocessing'
             }
         }
         stage('Train model') {
             steps {
-                sh 'python3 ./HW2/py_scripts/model_preparation.py'
+                sh 'python3 ./py_scripts/model_preparation.py'
                 echo 'Finish train model'
             }
         }
         stage('Test model') {
             steps {
-                sh 'python3 ./HW2/python_scripts/model_testing.py'
+                sh 'python3 ./python_scripts/model_testing.py'
                 echo 'Finish test model'
             }
         }
