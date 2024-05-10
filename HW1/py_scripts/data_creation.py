@@ -28,7 +28,7 @@ def gen_data(n_samples=5, # всего признаков + целевая пе�
         rand = random.randint(11, 1000)
         anomaly = np.random.normal(loc=rand,scale=(0.3*rand), size=n_anomaly)
         data[i] = np.concatenate((data_clean, anomaly), axis=0)
-        random.shuffle(data[i])
+        #random.shuffle(data[i])
     #data = np.round(data, 2)
     data[n_samples-1] = np.random.normal(loc=18, scale=scale_size, size=n_features)
     return data.reshape(n_features,n_samples)
