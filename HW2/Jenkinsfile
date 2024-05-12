@@ -1,52 +1,62 @@
 pipeline {
     agent any
+
     stages {
-        stage('Setup virtual environment') {
+        stage('Checkout') {
             steps {
-                dir('HW2') {
-                    sh '''python3 -m venv env
-                    source env/bin/activate
-                    pip install -r requirements.txt'''
-                }
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '45b2e174-c311-436d-af96-5bdb3a1d27f7', url: 'https://github.com/Tifles/MLOps.git']])
             }
         }
-        stage('Preprocessing data') {
+        stage('Setup Python Environment') {
             steps {
-                dir('HW2/py_scripts') {
+                script {
                     sh '''
-                    python3 data_preprocessing.py
+                        if [ ! -d "HW2/.venv" ]; then
+                            env_name=${1:-".venv"}
+                            python3 -m venv "HW2/$env_name"
+                            echo "The virtual environment '$env_name' has been created."
+                        fi
+                    '''
+                    sh '''
+                        env_name=${1:-"HW2/.venv"}
+                        if [ ! -d "$env_name" ]; then
+                            echo "Virtual environment '$env_name' not found. Use '$0 create [env_name]' to create."
+                            return 1
+                        fi
+                        if [ -z "$VIRTUAL_ENV" ]; then
+                            chmod +x $env_name/bin/activate
+                            $env_name/bin/activate
+                            echo "Virtual environment '$env_name' is activated."
+                        else
+                            echo "The virtual environment has already been activated."
+                        fi
+                    '''
+                    
+                    sh '''
+                        pip install -r HW2/requirements.txt
+                        echo "All dependencies are already installed."
                     '''
                 }
-            }
+            }    
         }
-        stage('HW2/py_scripts') {
+        stage('Data preprocessing') {
             steps {
-                dir('HW2/py_scripts') {
-                    sh '''
-                    python3 model_preparation.py
-                    '''
+                echo 'Start data preprocessing'
+                sh 'python3 HW2/py_scripts/data_preprocessing.py'
+                echo 'Finish preprocessing data'
                 }
             }
-        }
+        stage('Model traning') {
+            steps {
+                sh 'python3 HW2/py_scripts/model_preparation.py'
+                echo 'Finish traning model'
+                }
+            }    
         stage('Model testing') {
             steps {
-                dir('HW2/py_scripts') {
-                    sh '''
-                    python3 model_testing.py
-                    '''
+                sh 'python3 HW2/py_scripts/model_testing.py'
+                echo 'Finish testing model'
                 }
             }
         }
-    }
-    post {
-        always {
-            echo 'The pipeline is finished!'
-        }
-        success {
-            echo 'The build was successful!'
-        }
-        failure {
-            echo 'The build failed.'
-        }
-    }
 }
