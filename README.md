@@ -8,18 +8,18 @@ To work with projects:
 1. Create a local copy of the repository with the command ```git clone https://github.com/Tifles/MLOps.git ```.
 2. Go to the project directory ```cd MLOps```
 
-### Laboratory work №1 (HW1)
-[Creating an automatic machine learning project pipeline.](./HW1/)
+### Laboratory work №1 (lab1)
+[Creating an automatic machine learning project pipeline.](./lab1/)
 
-### Laboratory work №2 (HW2)
-[Creating an automatic machine learning project pipeline.](./HW2/)
+### Laboratory work №2 (lab2)
+[Creating an automatic machine learning project pipeline.](./lab2/)
 
-### Laboratory work №3 (HW3)
-[Creating an automatic machine learning project pipeline.](./HW3/)
+### Laboratory work №3 (lab)
+[Creating an automatic machine learning project pipeline.](./lab3/)
 
-### Laboratory work №4 (HW4)
-[Creating an automatic machine learning project pipeline.](./HW4/)
+### Laboratory work №4 (lab4)
+[Creating an automatic machine learning project pipeline.](./lab4/)
 
-### Laboratory work №5 (HW5)
-[Creating an automatic machine learning project pipeline.](./HW5/)
+### Laboratory work №5 (lab5)
+[Creating an automatic machine learning project pipeline.](./lab5/)
 
