@@ -12,10 +12,10 @@ To work with projects:
 [Creating an automatic machine learning project pipeline.](./lab1/)
 
 ### Laboratory work №2 (lab2)
-[Creating an automatic machine learning project pipeline.](./lab2/)
+[Creating an automatic pipeline for the Jenkins machine learning project.](./lab2/)
 
 ### Laboratory work №3 (lab)
-[Creating an automatic machine learning project pipeline.](./lab3/)
+[Working with docker and docker-compose and creating microservices.](./lab3/)
 
 ### Laboratory work №4 (lab4)
 [Creating an automatic machine learning project pipeline.](./lab4/)
