@@ -1,7 +1,7 @@
 .venv
-/HW1/.venv
-/HW1/test
-/HW1/train
-/HW1/models
-/HW2/.venv
-/HW3/.venv
+/lab1/.venv
+/lab1/test
+/lab1/train
+/lab1/models
+/lab2/.venv
+/lab3/.venv

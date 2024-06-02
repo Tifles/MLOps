@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '45b2e174-c311-436d-af96-5bdb3a1d27f7', url: 'https://github.com/Tifles/MLOps.git']])
+            }
+        }
+        stage('Setup Python Environment') {
+            steps {
+                script {
+                    sh '''
+                        if [ ! -d "lab2/.venv" ]; then
+                            env_name=${1:-".venv"}
+                            python3 -m venv "lab2/$env_name"
+                            echo "The virtual environment '$env_name' has been created."
+                        fi
+                    '''
+                    sh '''
+                        env_name=${1:-"lab2/.venv"}
+                        if [ ! -d "$env_name" ]; then
+                            echo "Virtual environment '$env_name' not found. Use '$0 create [env_name]' to create."
+                            return 1
+                        fi
+                        if [ -z "$VIRTUAL_ENV" ]; then
+                            chmod +x $env_name/bin/activate
+                            $env_name/bin/activate
+                            echo "Virtual environment '$env_name' is activated."
+                        else
+                            echo "The virtual environment has already been activated."
+                        fi
+                    '''
+                    
+                    sh '''
+                        pip install -r lab2/requirements.txt
+                        echo "All dependencies are already installed."
+                    '''
+                }
+            }    
+        }
+        stage('Data preprocessing') {
+            steps {
+                echo 'Start data preprocessing'
+                sh 'python3 lab2/py_scripts/data_preprocessing.py'
+                echo 'Finish preprocessing data'
+                }
+            }
+        stage('Model traning') {
+            steps {
+                sh 'python3 lab2/py_scripts/model_preparation.py'
+                echo 'Finish traning model'
+                }
+            }    
+        stage('Model testing') {
+            steps {
+                sh 'python3 lab2/py_scripts/model_testing.py'
+                echo 'Finish testing model'
+                }
+            }
+        }
+}
